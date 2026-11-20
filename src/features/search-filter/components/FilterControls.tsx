@@ -1,3 +1,4 @@
+import { useMemo } from 'preact/hooks';
 import { useStore } from '@nanostores/preact';
 import type { ProductCategory } from '../../../shared/types/product.types';
 import { $isLoading } from '../../catalog';
@@ -16,6 +17,7 @@ import {
   setProducto,
 } from '../store/filterStore';
 import { FIXED_CATEGORIES } from '../utils/filterAndSortProducts';
+import { CustomSelect, type CustomSelectOption } from './CustomSelect';
 import { SortSelect } from './SortSelect';
 
 export function CategoryChips() {
@@ -31,7 +33,7 @@ export function CategoryChips() {
     <div
       role="group"
       aria-label="Filtrar por categoría"
-      className="no-scrollbar flex items-center gap-1.5 overflow-x-auto py-0.5"
+      className="no-scrollbar flex w-full max-w-full items-center gap-1.5 overflow-x-auto py-0.5"
     >
       {options.map((opt) => {
         const isActive = categoria === opt.value;
@@ -42,7 +44,7 @@ export function CategoryChips() {
             disabled={isLoading}
             aria-pressed={isActive}
             onClick={() => setCategoria(opt.value)}
-            className={`min-h-[40px] shrink-0 cursor-pointer rounded-full border px-3.5 py-1.5 text-xs font-bold transition-colors sm:text-xs ${
+            className={`min-h-[40px] shrink-0 cursor-pointer rounded-full border px-3.5 py-1.5 text-xs font-bold transition-colors ${
               isActive
                 ? 'border-[var(--color-primary)] bg-[var(--color-primary)] text-white shadow-xs'
                 : 'border-[var(--color-border-subtle)] bg-[var(--color-bg-page)]/80 text-[var(--color-text-main)] hover:bg-blue-100/70'
@@ -65,65 +67,69 @@ export function FilterControls() {
   const hasActiveFilters = useStore($hasActiveFilters);
   const isLoading = useStore($isLoading);
 
+  const productoOptions = useMemo<CustomSelectOption[]>(
+    () => [
+      { value: 'ALL', label: `Todos (${availableProductos.length})` },
+      ...availableProductos.map((prod) => ({ value: prod, label: prod })),
+    ],
+    [availableProductos]
+  );
+
+  const marcaOptions = useMemo<CustomSelectOption[]>(
+    () => [
+      { value: 'ALL', label: `Todas (${availableMarcas.length})` },
+      ...availableMarcas.map((brand) => ({ value: brand, label: brand })),
+    ],
+    [availableMarcas]
+  );
+
   return (
-    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:flex lg:flex-wrap lg:items-center">
+    <div className="grid w-full min-w-0 max-w-full grid-cols-1 gap-2 sm:grid-cols-2 lg:flex lg:flex-wrap lg:items-center">
       {/* Filtro por Tipo de Producto */}
-      <div className="lg:min-w-[185px] lg:flex-1">
-        <label htmlFor="filter-producto-select" className="sr-only">
-          Filtrar por tipo de producto
-        </label>
-        <select
+      <div className="min-w-0 w-full lg:min-w-[185px] lg:flex-1">
+        <CustomSelect
           id="filter-producto-select"
+          ariaLabel="Filtrar por tipo de producto"
+          sheetTitle="Filtrar por tipo de producto"
+          prefixLabel="Producto"
           disabled={isLoading}
           value={producto}
-          onChange={(e) => setProducto((e.currentTarget as HTMLSelectElement).value)}
-          className="min-h-[44px] w-full cursor-pointer rounded-xl border border-[var(--color-border-subtle)] bg-white px-3 text-xs font-semibold text-[var(--color-text-main)] focus:border-[var(--color-primary)] focus:ring-2 focus:ring-blue-500/20 focus:outline-none disabled:cursor-not-allowed disabled:opacity-60 sm:text-sm"
-        >
-          <option value="ALL">Producto: Todos ({availableProductos.length})</option>
-          {availableProductos.map((prod) => (
-            <option key={prod} value={prod}>
-              {prod}
-            </option>
-          ))}
-        </select>
+          options={productoOptions}
+          onChange={setProducto}
+          isActiveFilter={producto !== 'ALL'}
+        />
       </div>
 
       {/* Filtro por Marca */}
-      <div className="lg:min-w-[185px] lg:flex-1">
-        <label htmlFor="filter-marca-select" className="sr-only">
-          Filtrar por marca
-        </label>
-        <select
+      <div className="min-w-0 w-full lg:min-w-[185px] lg:flex-1">
+        <CustomSelect
           id="filter-marca-select"
+          ariaLabel="Filtrar por marca"
+          sheetTitle="Filtrar por marca"
+          prefixLabel="Marca"
           disabled={isLoading}
           value={marca}
-          onChange={(e) => setMarca((e.currentTarget as HTMLSelectElement).value)}
-          className="min-h-[44px] w-full cursor-pointer rounded-xl border border-[var(--color-border-subtle)] bg-white px-3 text-xs font-semibold text-[var(--color-text-main)] focus:border-[var(--color-primary)] focus:ring-2 focus:ring-blue-500/20 focus:outline-none disabled:cursor-not-allowed disabled:opacity-60 sm:text-sm"
-        >
-          <option value="ALL">Marca: Todas ({availableMarcas.length})</option>
-          {availableMarcas.map((brand) => (
-            <option key={brand} value={brand}>
-              {brand}
-            </option>
-          ))}
-        </select>
+          options={marcaOptions}
+          onChange={setMarca}
+          isActiveFilter={marca !== 'ALL'}
+        />
       </div>
 
       {/* Selector de Ordenamiento A-Z / Precio */}
-      <div className="lg:min-w-[205px] lg:flex-1">
+      <div className="min-w-0 w-full lg:min-w-[205px] lg:flex-1">
         <SortSelect />
       </div>
 
       {/* Toggle rápido: Solo disponibles con stock */}
-      <label className="flex min-h-[44px] cursor-pointer items-center justify-center gap-2 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-page)]/60 px-3 text-xs font-semibold text-[var(--color-text-main)] select-none hover:bg-blue-100/60 sm:text-sm">
+      <label className="flex min-h-[44px] w-full min-w-0 cursor-pointer items-center justify-between gap-2 rounded-xl border border-[var(--color-border-subtle)] bg-white px-3.5 text-xs font-semibold text-[var(--color-text-main)] select-none transition-colors hover:bg-blue-50/70 sm:w-auto sm:justify-center sm:bg-[var(--color-bg-page)]/60 sm:text-sm">
+        <span className="truncate">Solo disponibles con stock</span>
         <input
           type="checkbox"
           disabled={isLoading}
           checked={onlyInStock}
           onChange={(e) => setOnlyInStock((e.currentTarget as HTMLInputElement).checked)}
-          className="h-4 w-4 accent-[var(--color-primary)]"
+          className="h-4 w-4 shrink-0 accent-[var(--color-primary)]"
         />
-        <span>Solo con stock</span>
       </label>
 
       {/* Botón Limpiar Filtros */}
@@ -131,7 +137,7 @@ export function FilterControls() {
         <button
           type="button"
           onClick={() => clearAllFilters()}
-          className="flex min-h-[44px] cursor-pointer items-center justify-center gap-1.5 rounded-xl border border-red-200 bg-[var(--color-soldout-bg)] px-3.5 text-xs font-bold text-[var(--color-soldout)] transition-colors hover:bg-red-100 sm:text-sm"
+          className="flex min-h-[44px] w-full min-w-0 cursor-pointer items-center justify-center gap-1.5 rounded-xl border border-red-200 bg-[var(--color-soldout-bg)] px-3.5 text-xs font-bold text-[var(--color-soldout)] transition-colors hover:bg-red-100 sm:w-auto sm:text-sm"
         >
           <span aria-hidden="true">✕</span>
           <span>Limpiar filtros</span>

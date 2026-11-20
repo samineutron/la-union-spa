@@ -9,10 +9,12 @@ export function SearchFilterIsland() {
   const secondaryCount = useStore($secondaryFiltersCount);
 
   return (
-    <div className="flex flex-col gap-2.5">
+    <div className="flex w-full min-w-0 max-w-full flex-col gap-2.5">
       {/* Fila superior: Buscador + botón desplegable en móvil */}
-      <div className="flex items-center gap-2">
-        <SearchBar />
+      <div className="flex w-full min-w-0 items-center gap-2">
+        <div className="min-w-0 flex-1">
+          <SearchBar />
+        </div>
 
         <button
           type="button"
@@ -26,7 +28,7 @@ export function SearchFilterIsland() {
           }`}
         >
           <svg
-            className="h-4 w-4"
+            className="h-4 w-4 shrink-0"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -48,6 +50,20 @@ export function SearchFilterIsland() {
               {secondaryCount}
             </span>
           )}
+          <svg
+            className={`h-3.5 w-3.5 shrink-0 transition-transform duration-150 ${
+              mobileFiltersOpen ? 'rotate-180' : ''
+            }`}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
         </button>
       </div>
 
@@ -57,7 +73,11 @@ export function SearchFilterIsland() {
       {/* Panel de filtros combinables (Producto, Marca, Orden A-Z, Stock) */}
       <div
         id="advanced-filter-panel"
-        className={`${mobileFiltersOpen ? 'block' : 'hidden'} sm:block`}
+        className={`${
+          mobileFiltersOpen
+            ? 'block rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-page)]/55 p-2.5'
+            : 'hidden'
+        } w-full min-w-0 max-w-full sm:block sm:rounded-none sm:border-0 sm:bg-transparent sm:p-0`}
       >
         <FilterControls />
       </div>

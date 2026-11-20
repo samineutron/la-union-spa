@@ -20,6 +20,12 @@
 }
 
 @layer base {
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
   html {
     background-color: var(--color-bg-page);
     color: var(--color-text-main);
@@ -31,6 +37,16 @@
   .tabular-nums {
     font-variant-numeric: tabular-nums;
   }
+}
+
+/* Ocultar barra de scroll horizontal en chips de categorías móviles */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 /* Encapsulamiento de Tarjeta Agotada (stock === 0) */

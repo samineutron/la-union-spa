@@ -7,6 +7,8 @@ export type { FilteredCatalogIslandProps } from './components/FilteredCatalogIsl
 export { SearchBar } from './components/SearchBar';
 export { FilterControls, CategoryChips } from './components/FilterControls';
 export { SortSelect } from './components/SortSelect';
+export { CustomSelect } from './components/CustomSelect';
+export type { CustomSelectOption, CustomSelectProps } from './components/CustomSelect';
 
 export {
   $query,
