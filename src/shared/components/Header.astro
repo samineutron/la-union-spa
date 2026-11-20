@@ -1,0 +1,30 @@
+---
+import { STORE_CONFIG } from '../config/store.config';
+---
+
+<header class="bg-[var(--color-primary)] text-white shadow-sm">
+  <div class="mx-auto max-w-7xl px-4 py-3.5 sm:px-6">
+    <div class="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="inline-block h-2.5 w-2.5 rounded-full bg-emerald-400" aria-hidden="true"></span>
+          <h1 class="text-lg font-extrabold tracking-tight sm:text-xl">
+            {STORE_CONFIG.storeName}
+          </h1>
+        </div>
+        <p class="mt-0.5 text-xs text-blue-100 sm:text-sm">
+          {STORE_CONFIG.locationLabel}
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-1.5 text-[11px] font-medium sm:text-xs">
+        <span class="rounded-full bg-white/15 px-2.5 py-1 text-white">
+          Compra desde 1 unidad · Precios de liquidación
+        </span>
+        <span class="rounded-full bg-white/15 px-2.5 py-1 text-white">
+          Transferencia / MercadoPago
+        </span>
+      </div>
+    </div>
+  </div>
+</header>

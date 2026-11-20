@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@theme {
+  /* Paleta B: Azul Cobalto Mayorista (60-30-10) */
+  --color-bg-page: #EFF6FF;
+  --color-bg-surface: #FFFFFF;
+  --color-primary: #1D4ED8;
+  --color-primary-dark: #1E40AF;
+  --color-cta: #2563EB;
+  --color-cta-hover: #1D4ED8;
+  --color-wholesale: #059669;
+  --color-wholesale-bg: #ECFDF5;
+  --color-soldout: #EF4444;
+  --color-soldout-bg: #FEF2F2;
+  --color-text-main: #111827;
+  --color-text-muted: #4B5563;
+  --color-border-subtle: #DBEAFE;
+
+  --font-sans: "Inter", "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-bg-page);
+    color: var(--color-text-main);
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Encapsulamiento de Tarjeta Agotada (stock === 0) */
+.card-soldout {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--color-soldout);
+  background-color: #F3F4F6;
+}
+
+.card-soldout .card-media,
+.card-soldout .card-secondary,
+.card-soldout .card-body {
+  filter: grayscale(100%);
+  opacity: 0.72;
+}
+
+.ribbon-soldout {
+  position: absolute;
+  top: 16px;
+  left: -34px;
+  z-index: 10;
+  width: 132px;
+  padding: 4px 0;
+  transform: rotate(-45deg);
+  background-color: var(--color-soldout);
+  color: #FFFFFF;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-align: center;
+  text-transform: uppercase;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+}

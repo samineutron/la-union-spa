@@ -1,16 +1,55 @@
 ---
+import '../styles/global.css';
+import Header from '../shared/components/Header.astro';
+import { STORE_CONFIG } from '../shared/config/store.config';
+import { SearchFilterIsland } from '../features/search-filter';
+import {
+  OrderBuilderIsland,
+  CatalogWithOrderStatus,
+} from '../features/order-builder';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+<!doctype html>
+<html lang="es-CL">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+    <meta
+      name="description"
+      content="Venta de Bodega en Maipú — Artículos de Aseo, Personal y Escolares. Compra desde 1 unidad y envía tu pedido directo por WhatsApp."
+    />
+    <meta property="og:title" content="Venta de Bodega en Maipú — Artículos de Aseo, Personal y Escolares" />
+    <meta
+      property="og:description"
+      content="Catálogo digital actualizado de La Unión SpA en Maipú. Precios de liquidación desde 1 unidad y descuentos mayoristas seleccionados."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{STORE_CONFIG.storeName}</title>
+  </head>
+  <body class="min-h-screen pb-24">
+    <Header />
+
+    <!-- Slot 1: Buscador, Filtros y Ordenamiento A-Z -->
+    <section
+      id="slot-search-filter"
+      aria-label="Buscador y filtros de productos"
+      class="sticky top-0 z-20 border-b border-[var(--color-border-subtle)] bg-white/95 backdrop-blur-xs"
+    >
+      <div class="mx-auto max-w-7xl px-4 py-3 sm:px-6">
+        <SearchFilterIsland client:load />
+      </div>
+    </section>
+
+    <!-- Slot 2: Catálogo de Productos Filtrado con Indicador de Pedido -->
+    <main id="slot-catalog" class="mx-auto max-w-7xl px-3 py-4 sm:px-6 sm:py-6">
+      <CatalogWithOrderStatus client:load />
+    </main>
+
+    <!-- Slot 3: Armador de Pedido Rápido + WhatsApp -->
+    <aside id="slot-order-builder" aria-label="Resumen de pedido">
+      <OrderBuilderIsland client:load />
+    </aside>
+  </body>
 </html>
